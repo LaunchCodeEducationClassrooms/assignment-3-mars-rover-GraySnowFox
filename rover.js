@@ -21,7 +21,7 @@ class Rover {
       let test;
     
       if (incCommand[i].commandType === "MODE_CHANGE"){
-        this.mode = incCommand[i].value;
+        test = this.modeChange(incCommand[i]);
       } else if (incCommand[i].commandType === "STATUS_CHECK"){
         test = this.statusCheck();
       }
@@ -49,8 +49,22 @@ class Rover {
       }
     }
 
+  modeChange(command){
 
+    this.mode = command.value;
 
+    return{
+      completed: true
+    }
+}
+
+moving(){
+  if(this.mode == "LOW_POWER"){
+    return{
+      completed: false
+      }
+    }
+  }
 }
 
 module.exports = Rover;

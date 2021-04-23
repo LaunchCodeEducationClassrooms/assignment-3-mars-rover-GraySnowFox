@@ -36,4 +36,20 @@ describe("Rover class", function() {
     expect(commands.value).toEqual(testRover);
   });  
 
+    it("responds correctly to mode change command", function(){
+
+  	let testRover = new Rover(42);
+  	let command = new Command("MODE_CHANGE", "LOW_POWER");
+    testRover.modeChange(command);
+  	expect(testRover.mode).toEqual(command.value);
+  });
+
+  it("responds with false completed value when attempting to move in LOW_POWER mode", function(){
+    let testRover = new Rover(42);
+    testRover.mode = "LOW_POWER";
+    let command = new Command("MOVE", 20);
+    let test = testRover.moving(command);
+    expect(test.completed).toEqual(false);
+  });
+
 });
