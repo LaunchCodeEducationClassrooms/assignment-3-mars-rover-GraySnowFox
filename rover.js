@@ -7,41 +7,47 @@ class Rover {
      
    }
 
-  receiveMessage(incoming){
+  receiveMessage(message){
+    let incCommand = message.commands;
 
-  var reply = new Object(); 
-
-
-
-  reply.message = incoming.name;
+    let reply = {
+      message: message.name,
+      results: []
+    }
   
 
-  
-  for(let i = 0; i<incoming.commands.length; i++){
-      let currentCommand = incoming.commands[i];
-   
-    if(currentCommand.commandType === "STATUS_CHECK"){
-      
-    var roverStatus = new Object();
-    console.log("\n\n\n\n");
-     roverStatus.position = this.position;
-     roverStatus.mode = this.mode;
-     roverStatus.generatorWatts = this.generatorWatts;
-     
-     
-    } else if(reply.results === "MODE_CHANGE"){
+    for(let i = 0; i< incCommand.length; i++){
 
-      if(this.mode ==="NORMAL"){
-        this.mode === "LOW_POWER";
-      } else {
-        this.mode === "NORMAL";
+      let test;
+    
+      if (incCommand[i].commandType === "MODE_CHANGE"){
+        this.mode = incCommand[i].value;
+      } else if (incCommand[i].commandType === "STATUS_CHECK"){
+        test = this.statusCheck();
       }
-    };
 
-  };  
-    console.log(reply);
-    return reply;
+      reply.results.push(test);
+
+    };    
+  reply.message = message.name;
+  reply.commands = message.commands;
+
+
+  return reply;
+
   };
+
+  
+
+  statusCheck() {
+      return{
+        roverStatus: {
+          position: this.position,
+          mode: this.mode,
+          generatorWatts: this.generatorWatts
+        }
+      }
+    }
 
 
 

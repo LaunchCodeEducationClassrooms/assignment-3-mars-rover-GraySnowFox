@@ -23,21 +23,17 @@ describe("Rover class", function() {
   });
 
   it("response returned by receiveMessage includes two results if two commands are sent in the message", function() {
-    let commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("STATUS_CHECK")];
+    let commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("MOVE", 20)];
     let message = new Message("Two command test message", commands);
     let testRover = new Rover(42);
     testRover = testRover.receiveMessage(message);
-    expect(testRover.results.length).toEqual(2);
+    expect(testRover.commands.length).toEqual(commands.length);
   });
 
   it("responds correctly to status check command", function(){
     let testRover = new Rover(42);
-    let commands = [new Command("STATUS_CHECK")];
-    testRover = testRover.receiveMessage(new Message("Nove", commands));
-    expect(testRover.results.roverStatus.mode).toEqual("NORMAL");
-    expect(testRover.results.roverStatus.generatorWatts).toEqual(110);
-    expect(testRover.results.roverStatus.position).toEqual(42);
-
+    let commands = new Command("STATUS_CHECK", testRover);
+    expect(commands.value).toEqual(testRover);
   });  
 
 });
