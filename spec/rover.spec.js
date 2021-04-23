@@ -8,6 +8,36 @@ const Command = require('../command.js');
 
 describe("Rover class", function() {
 
-  // 7 tests here!
+  it("constructor sets position and default values for mode and generatorWatts", function(){
+    let testRover = new Rover(42);
+    expect(testRover.position).toEqual(42);
+    expect(testRover.mode).toEqual('NORMAL');
+    expect(testRover.generatorWatts).toEqual(110);
+  });
+
+  it("response returned by receiveMessage contains name of message", function() {
+    let testRover = new Rover(42);
+    let command = new Command("STATUS_CHECK");
+    testRover = testRover.receiveMessage(new Message("Hello", command));
+    expect(testRover.message).toEqual("Hello");
+  });
+
+  it("response returned by receiveMessage includes two results if two commands are sent in the message", function() {
+    let commands = [new Command("MODE_CHANGE", "LOW_POWER"), new Command("STATUS_CHECK")];
+    let message = new Message("Two command test message", commands);
+    let testRover = new Rover(42);
+    testRover = testRover.receiveMessage(message);
+    expect(testRover.results.length).toEqual(2);
+  });
+
+  it("responds correctly to status check command", function(){
+    let testRover = new Rover(42);
+    let commands = [new Command("STATUS_CHECK")];
+    testRover = testRover.receiveMessage(new Message("Nove", commands));
+    expect(testRover.results.roverStatus.mode).toEqual("NORMAL");
+    expect(testRover.results.roverStatus.generatorWatts).toEqual(110);
+    expect(testRover.results.roverStatus.position).toEqual(42);
+
+  });  
 
 });
