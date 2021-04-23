@@ -52,4 +52,11 @@ describe("Rover class", function() {
     expect(test.completed).toEqual(false);
   });
 
+  it("responds with position for move command", function() {
+    let testRover = new Rover(42);
+    let command = new Command("MOVE", 20);
+    let test = testRover.moving(command);
+    expect(testRover.position).toEqual(command.value);
+  });
+
 });

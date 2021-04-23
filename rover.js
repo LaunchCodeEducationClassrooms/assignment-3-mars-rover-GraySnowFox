@@ -58,11 +58,15 @@ class Rover {
     }
 }
 
-moving(){
+moving(command){
   if(this.mode == "LOW_POWER"){
     return{
       completed: false
       }
+    }
+    this.position = command.value;
+    return{
+      completed: true
     }
   }
 }
