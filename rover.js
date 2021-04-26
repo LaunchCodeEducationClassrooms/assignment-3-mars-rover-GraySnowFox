@@ -24,6 +24,12 @@ class Rover {
         test = this.modeChange(incCommand[i]);
       } else if (incCommand[i].commandType === "STATUS_CHECK"){
         test = this.statusCheck();
+      } else if (incCommand[i].commandType === "MOVE"){
+        if (this.mode === "LOW_POWER"){
+          response.results.push({completed: false})
+        } else {this.position = message.commands[i].value
+        response.results.push({completed: true})
+        }
       }
 
       reply.results.push(test);
